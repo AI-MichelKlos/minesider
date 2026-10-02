@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mine sider</title>
+<meta name="description" content="Alle Michel Klos' dashboards, spil og quizzer på GitHub Pages samlet ét sted.">
+<link rel="stylesheet" href="https://ai-michelklos.github.io/arbejdsmarked/stil/efteraar.css">
+<style>
+:root{
+  --brown:#4A3428; --cognac:#9A5B34; --sand:#EFE4D6; --sand-strong:#E2D2BF; --tint:#F7F1EA;
+  --stone:#C9BCAE; --line:#E6DDD2; --ink:#2B211B; --ink-muted:#6F6258;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--tint);color:var(--ink);font:15px/1.5 Arial,Helvetica,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:32px 16px 48px}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cognac);margin:0 0 4px}
+h1{font-size:40px;line-height:1.1;color:var(--brown);margin:0 0 8px}
+.lead{margin:0 0 20px;max-width:60ch;color:var(--ink)}
+.search{display:block;width:100%;max-width:420px;padding:10px 12px;border:1px solid var(--stone);border-radius:10px;background:#fff;font:15px Arial,Helvetica,sans-serif;color:var(--ink)}
+.search:focus{outline:2px solid var(--cognac);outline-offset:1px}
+section{margin-top:32px}
+h2{font-size:24px;color:var(--brown);margin:0 0 12px}
+h2 .n{font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:400;color:var(--ink-muted)}
+.grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.card a.main{font-family:Cambria,Caladea,Georgia,serif;font-weight:700;font-size:18px;color:var(--brown);text-decoration:none;line-height:1.25}
+.card a.main:hover{color:var(--cognac);text-decoration:underline}
+.card p{margin:0;font-size:14px;color:var(--ink)}
+.subs{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13.5px}
+.subs a{color:var(--cognac)}
+.meta{display:flex;flex-wrap:wrap;gap:2px 12px;font-size:12px;color:var(--ink-muted);margin-top:auto;padding-top:6px}
+.meta a{color:var(--ink-muted)}
+a:focus-visible{outline:2px solid var(--cognac);outline-offset:2px;border-radius:2px}
+.note{font-size:13.5px;color:var(--ink-muted);margin:0}
+.note li{margin:2px 0}
+.empty{display:none;color:var(--ink-muted);margin-top:24px}
+footer{margin-top:40px;font-size:12px;color:var(--ink-muted)}
+[hidden]{display:none!important}
+@media (max-width:520px){h1{font-size:32px}.wrap{padding-top:24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="kicker">AI-MichelKlos på GitHub</p>
+  <h1>Mine sider</h1>
+  <p class="lead">Alle mine dashboards, spil og quizzer på GitHub Pages samlet ét sted.</p>
+  <input class="search" id="q" type="search" placeholder="Søg, fx ledighed eller jul" aria-label="Søg i siderne">
+
+  <div id="lists"></div>
+  <p class="empty" id="none">Ingen sider passer til søgningen.</p>
+
+  <section id="newSec" hidden>
+    <h2>Nye sider <span class="n">ikke sorteret endnu</span></h2>
+    <ul class="grid" id="newList"></ul>
+  </section>
+
+  <section>
+    <h2>Repoer uden egen side</h2>
+    <ul class="note">
+      <li><a href="https://github.com/AI-MichelKlos/danmarkskort">danmarkskort</a>: siden er tom.</li>
+      <li><a href="https://github.com/AI-MichelKlos/maaneforansol">maaneforansol</a>: der ligger ingen side i repoet.</li>
+      <li><a href="https://github.com/AI-MichelKlos/spil">spil</a>: en ældre kopi af Spin &amp; Skandale. Den nyeste ligger under Quizzer og andre spil.</li>
+    </ul>
+  </section>
+
+  <footer>Opdateret 2. oktober 2026. Udarbejdet med AI (Claude) efter input fra Michel Klos. Nye repoer med GitHub Pages dukker automatisk op under "Nye sider".</footer>
+</div>
+
+<script>
+// Tilføj en ny side ved at kopiere en linje i den rigtige gruppe.
+// url er stien efter https://ai-michelklos.github.io/ og repo er navnet på repoet.
+const BASE = 'https://ai-michelklos.github.io/';
+const GROUPS = [
+  { name: 'Arbejdsmarkedet', items: [
+    { t: 'Arbejdsmarkedet i tal', url: 'arbejdsmarked/', repo: 'arbejdsmarked', d: 'Samlet indgang til dashboards og analyser af det danske arbejdsmarked.' },
+    { t: 'Analyse og dashboards', url: 'Dashboard/app/', repo: 'Dashboard', d: 'Ét sted med adgang til alle dashboards.' },
+    { t: 'Arbejdsmarkedet generelt - nøgletal', url: 'Dashboard/', repo: 'Dashboard', d: 'Ledighed, dagpenge, stillinger, konkurser, tillid og inflation.' },
+    { t: 'A-kasseindsigt', url: 'A-kasseindsigt-dashboard/', repo: 'A-kasseindsigt-dashboard', d: 'Nøgletal om ledighed, a-dagpenge og a-kassernes arbejde.', subs: [['Fra nyledighed til job og uddannelse', 'A-kasseindsigt-dashboard/resultatmaal/']] },
+    { t: 'JUR - Arbejdsmarkedsoverblik', url: 'Dashboard-dak-jur/', repo: 'Dashboard-dak-jur', d: 'Ledighed, aktivering, varslinger, konkurser og sanktioner.' },
+    { t: 'Kommunal beskæftigelsesindsats', url: 'kommunal-beskaeftigelsesindsats/', repo: 'kommunal-beskaeftigelsesindsats', d: 'Sammenlign kommunal ledighed, kontanthjælp og aktivering.' },
+    { t: 'Udenlandske lønmodtagere i Danmark', url: 'udenlandskeloenmodtagere/', repo: 'udenlandskeloenmodtagere', d: 'Udvikling og status for udenlandske statsborgere med lønindkomst i Danmark.' },
+    { t: 'Seniorer på arbejdsmarkedet', url: 'arbejdsstyrke/', repo: 'arbejdsstyrke', d: 'Beskæftigelse og erhvervsdeltagelse omkring folkepensionsalderen.' },
+    { t: 'Antal ansatte i Danmarks største virksomheder', url: 'ansatteidanskevirksomheder/', repo: 'ansatteidanskevirksomheder', d: 'Ansatte i de 1.000 største virksomheder.', subs: [['Arkiv', 'ansatteidanskevirksomheder/arkiv/']] },
+    { t: 'Hvor er jobbene?', url: 'arbejdsmarked/jobs.html', repo: 'arbejdsmarked', d: 'Jobopslag og rekrutteringsudfordringer.' },
+  ]},
+  { name: 'Spil og eventyr', items: [
+    { t: 'Skolen på Duevej', url: 'skolen-paa-duevej/', repo: 'skolen-paa-duevej', d: '3D-gåtur rundt på skolen. Find de 12 duer.' },
+    { t: 'Pigen og Julestjernen', url: 'pigen-og-julestjernen/', repo: 'pigen-og-julestjernen', d: '3D-juleeventyr ved Himmelbjerget.' },
+    { t: 'Spøgelseshuset', url: 'halloween/', repo: 'halloween', d: 'Edith og Willas halloween-eventyr.' },
+    { t: 'Julemissionen på Borgen', url: 'halloween/jul/', repo: 'halloween', d: 'Juleeventyr gennem 14 steder på Christiansborg.' },
+    { t: 'Julens dyrevenner på Borgen', url: 'halloween/jul-dyrevenner/', repo: 'halloween', d: 'Juleeventyr med en nisse og tre dyr på Christiansborg.' },
+    { t: 'Zoo-eventyret', url: 'stjernespil/', repo: 'stjernespil', d: 'Willa finder Edith i zoologisk have.' },
+    { t: 'Edith & Willas Eventyr 2.0', url: 'edith-willa-unicorn-game/', repo: 'edith-willa-unicorn-game', d: 'Enhjørninge-eventyr med regnbuer og stjerner.' },
+  ]},
+  { name: 'Quizzer og andre spil', items: [
+    { t: 'Solformørkelses-Missionen', url: 'solformoerkelse/', repo: 'solformoerkelse', d: 'Quiz om solformørkelsen den 12. august 2026.' },
+    { t: 'Forlig før daggry', url: 'dendanskemodel/', repo: 'dendanskemodel', d: 'Quiz om dansk arbejdsmarkedshistorie fra Fælleden til i dag.' },
+    { t: 'Spin & Skandale: Krisemanageren', url: 'Michelsspil/spin-og-skandale/', repo: 'Michelsspil', d: '10 politiske skandaler, 10 valg.' },
+    { t: 'Blacksite Hero Arena', url: 'blacksite-hero-arena/', repo: 'blacksite-hero-arena', d: 'Taktisk 3D-skydespil i browseren.' },
+  ]},
+];
+// Repoer, der ikke skal vises under "Nye sider".
+const SKIP = ['minesider', 'danmarkskort', 'maaneforansol', 'spil'];
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+function card(it) {
+  const subs = (it.subs || []).map(([t, u]) => `<a href="${BASE + u}">${esc(t)}</a>`).join('');
+  return `<li class="card" data-text="${esc((it.t + ' ' + it.d + ' ' + it.repo + ' ' + (it.subs || []).map(s => s[0]).join(' ')).toLowerCase())}">
+    <a class="main" href="${BASE + it.url}">${esc(it.t)}</a>
+    <p>${esc(it.d)}</p>
+    ${subs ? `<div class="subs">${subs}</div>` : ''}
+    <div class="meta"><span>${esc(it.url)}</span><a href="https://github.com/AI-MichelKlos/${it.repo}">Kode</a><span class="upd" data-repo="${esc(it.repo)}"></span></div>
+  </li>`;
+}
+document.getElementById('lists').innerHTML = GROUPS.map(g =>
+  `<section><h2>${esc(g.name)} <span class="n">${g.items.length} sider</span></h2><ul class="grid">${g.items.map(card).join('')}</ul></section>`).join('');
+
+const q = document.getElementById('q');
+q.addEventListener('input', () => {
+  const v = q.value.trim().toLowerCase(); let shown = 0;
+  document.querySelectorAll('.card').forEach(c => { const ok = !v || c.dataset.text.includes(v); c.hidden = !ok; if (ok) shown++; });
+  document.querySelectorAll('section').forEach(s => { const cards = s.querySelectorAll('.card'); if (cards.length) s.hidden = ![...cards].some(c => !c.hidden); });
+  document.getElementById('none').style.display = shown ? 'none' : 'block';
+});
+
+// Henter repoerne fra GitHub: viser hvornår de sidst er opdateret, og finder nye sider.
+fetch('https://api.github.com/users/AI-MichelKlos/repos?per_page=100')
+  .then(r => r.ok ? r.json() : Promise.reject(r.status))
+  .then(repos => {
+    const fmt = d => new Date(d).toLocaleDateString('da-DK', { day: 'numeric', month: 'short', year: 'numeric' });
+    const byName = {}; repos.forEach(r => byName[r.name] = r);
+    document.querySelectorAll('.upd').forEach(el => { const r = byName[el.dataset.repo]; if (r) el.textContent = 'Opdateret ' + fmt(r.pushed_at); });
+    const known = new Set(GROUPS.flatMap(g => g.items.map(i => i.repo)).concat(SKIP));
+    const fresh = repos.filter(r => r.has_pages && !known.has(r.name)).sort((a, b) => b.pushed_at.localeCompare(a.pushed_at));
+    if (!fresh.length) return;
+    document.getElementById('newList').innerHTML = fresh.map(r => card({ t: r.name, url: r.name + '/', repo: r.name, d: r.description || 'Ny side på GitHub Pages.' })).join('');
+    document.querySelectorAll('#newList .upd').forEach(el => { const r = byName[el.dataset.repo]; if (r) el.textContent = 'Opdateret ' + fmt(r.pushed_at); });
+    document.getElementById('newSec').hidden = false;
+  })
+  .catch(() => {});
+</script>
+</body>
+</html>
