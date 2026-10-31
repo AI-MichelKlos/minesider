@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mine sider</title>
-<meta name="description" content="Alle Michel Klos' dashboards, spil og quizzer på GitHub Pages samlet ét sted.">
+<meta name="description" content="Michel Klos' dashboards, spil og guider samlet ét sted.">
 <link rel="stylesheet" href="https://ai-michelklos.github.io/arbejdsmarked/stil/efteraar.css">
 <style>
 :root{
@@ -45,7 +45,7 @@ footer{margin-top:40px;font-size:12px;color:var(--ink-muted)}
 <div class="wrap">
   <p class="kicker">AI-MichelKlos på GitHub</p>
   <h1>Mine sider</h1>
-  <p class="lead">Alle mine dashboards, spil og quizzer på GitHub Pages samlet ét sted.</p>
+  <p class="lead">Mine dashboards, spil og guider samlet ét sted.</p>
   <input class="search" id="q" type="search" placeholder="Søg, fx ledighed eller jul" aria-label="Søg i siderne">
 
   <div id="lists"></div>
@@ -65,7 +65,7 @@ footer{margin-top:40px;font-size:12px;color:var(--ink-muted)}
     </ul>
   </section>
 
-  <footer>Opdateret 2. oktober 2026. Udarbejdet med AI (Claude) efter input fra Michel Klos. Nye repoer med GitHub Pages dukker automatisk op under "Nye sider".</footer>
+  <footer>Opdateret 31. oktober 2026. Udarbejdet med AI (Claude) efter input fra Michel Klos. Nye repoer med GitHub Pages dukker automatisk op under "Nye sider".</footer>
 </div>
 
 <script>
@@ -87,6 +87,7 @@ const GROUPS = [
   ]},
   { name: 'Politik og valg', items: [
     { t: 'Kongreskortet', url: 'usa-kongres-3d/', repo: 'usa-kongres-3d', d: 'Kort over USA\'s Kongres med æsel og elefant i tovtrækning og målinger til midtvejsvalget.' },
+    { t: 'Valg USA 2026', url: 'https://valgkort-usa-2026-michel.danske-a-kas-7580.chatgpt.site/', repo: 'usa-kongres', code: 'https://github.com/AI-MichelKlos/usa-kongres/tree/main/valg-usa-2026', label: 'ChatGPT Site', d: 'Dansk guide til midtvejsvalget med kort over Senatet, Repræsentanternes Hus og guvernørvalg samt Chicago som lokalt eksempel.' }
   ]},
   { name: 'Spil og eventyr', items: [
     { t: 'Skolen på Duevej', url: 'skolen-paa-duevej/', repo: 'skolen-paa-duevej', d: '3D-gåtur rundt på skolen. Find de 12 duer.' },
@@ -109,12 +110,14 @@ const SKIP = ['minesider', 'danmarkskort', 'maaneforansol', 'spil'];
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 function card(it) {
+  const pageUrl = it.url.startsWith('https://') ? it.url : BASE + it.url;
+  const codeUrl = it.code || `https://github.com/AI-MichelKlos/${it.repo}`;
   const subs = (it.subs || []).map(([t, u]) => `<a href="${BASE + u}">${esc(t)}</a>`).join('');
   return `<li class="card" data-text="${esc((it.t + ' ' + it.d + ' ' + it.repo + ' ' + (it.subs || []).map(s => s[0]).join(' ')).toLowerCase())}">
-    <a class="main" href="${BASE + it.url}">${esc(it.t)}</a>
+    <a class="main" href="${esc(pageUrl)}">${esc(it.t)}</a>
     <p>${esc(it.d)}</p>
     ${subs ? `<div class="subs">${subs}</div>` : ''}
-    <div class="meta"><span>${esc(it.url)}</span><a href="https://github.com/AI-MichelKlos/${it.repo}">Kode</a><span class="upd" data-repo="${esc(it.repo)}"></span></div>
+    <div class="meta"><span>${esc(it.label || it.url)}</span><a href="${esc(codeUrl)}">Kode</a><span class="upd" data-repo="${esc(it.repo)}"></span></div>
   </li>`;
 }
 document.getElementById('lists').innerHTML = GROUPS.map(g =>
